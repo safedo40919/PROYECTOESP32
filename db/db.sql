@@ -39,4 +39,5 @@ SELECT * FROM sensores;
 SELECT * FROM leds;
 
 
-
+SELECT * FROM leds
+INNER JOIN users ON leds.user_id = users.id;
