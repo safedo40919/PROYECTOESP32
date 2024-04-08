@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import express from 'express'
+import bcrypt from 'bcrypt'
 
 //database ______
 import { createConnection } from 'mysql2/promise'
@@ -36,31 +37,44 @@ app.get('/user/:id', async (req, res) => {
 app.post('/user', async (req, res) => {
   const { name, email, password } = req.body
 
-  const id = Math.random(9999999999999) // Generar un ID único
+  const userid = crypto.randomUUID()
+  const hashPass = await bcrypt.hash(password, 10)
 
-  // Utilizar marcadores de posición (?) en la consulta SQL
   const [data] = await conn.query(
     `
     INSERT INTO users (id, name, email, password)
     VALUES (?, ?, ?, ?);
     `,
-    [id, name, email, password], // Pasar los valores como un arreglo
+    [userid, name, email, hashPass],
   )
 
   res.sendStatus(201)
 })
 
 //sensores: ____________
-app.get('/sensores', (req, res) => {
+app.get('/sensores', async (req, res) => {
+  const [data] = await conn.query('SELECT * FROM sensores;')
+
   res.json({
-    msg: 'hola mundo!!',
+    data,
   })
 })
 
-app.post('/sensores', (req, res) => {
-  res.json({
-    msg: 'hola mundo!!',
-  })
+app.post('/sensores', async (req, res) => {
+  const { status, idUser } = req.body
+
+  const id = crypto.randomUUID()
+  const time = new Date()
+
+  const [data] = await conn.query(
+    `
+    INSERT INTO sensores (id, status, time, user_id)
+    VALUES (?, ?, ?, ?);
+    `,
+    [id, status, time, idUser],
+  )
+
+  res.sendStatus(201)
 })
 
 //leds:________________

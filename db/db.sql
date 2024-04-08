@@ -3,25 +3,28 @@ CREATE DATABASE esp32;
 
 USE eps32;
 
+DROP TABLE IF EXISTS users;
 CREATE TABLE users (
-  id INT(10) PRIMARY KEY,
+  id VARCHAR(255)  PRIMARY KEY,
   name VARCHAR(255),
   email VARCHAR(255),
   password VARCHAR(255)
 );
 
+DROP TABLE IF EXISTS sensores;
 CREATE TABlE sensores (
-  id INT(10) PRIMARY KEY,
+  id VARCHAR(255) PRIMARY KEY,
   status VARCHAR(50),
   time Date,
-  user_id INT,
+  user_id VARCHAR(255),
   FOREIGN KEY (user_id) REFERENCES users(id)  
 ); 
 
+DROP TABLE IF EXISTS leds;
 CREATE TABLE leds(
-  id INT(10) PRIMARY KEY,
+  id VARCHAR(255) PRIMARY KEY,
   status VARCHAR(255),
-  user_id INT,
+  user_id VARCHAR(255),
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
