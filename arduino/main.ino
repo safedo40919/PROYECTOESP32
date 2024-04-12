@@ -42,7 +42,7 @@ void loop()
 
   if (sensor == HIGH)
   {
-    res.begin(String("127.0.0.1:3000/user"));
+    res.begin(String("http://127.0.0.1:3000/user"));
 
     int statuscode = res.get();
 
